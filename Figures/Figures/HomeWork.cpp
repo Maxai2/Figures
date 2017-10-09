@@ -33,4 +33,24 @@ Width: 100
 Height: 200
 Position: 10 x 20
 Background Color: #ff00e5;
-Foreground Color: #000000;*/
+Foreground Color: #000000;
+
+enum Colors
+{
+BLACK,
+DARKBLUE,
+DARKGREEN,
+DARKCYAN,
+DARKRED,
+DARKMAGENTA,
+BROWN,
+LIGHTGREY,
+GREY,
+BLUE,
+GREEN,
+CYAN,
+RED,
+MAGENTA,
+YELLOW,
+WHITE
+};*/
