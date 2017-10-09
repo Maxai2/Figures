@@ -24,7 +24,7 @@ public:
 	void setWidth() 
 	{
 		int val;
-		cout << "Side: ";
+		cout << "Width: ";
 		cin >> val;
 		this->width = val; 
 	}
@@ -35,7 +35,7 @@ public:
 	{
 		cout << "X: ";
 		cin >> this->position.x;
-		cout << " ,Y: ";
+		cout << "Y: ";
 		cin >> this->position.y;
 	}
 };
@@ -43,12 +43,10 @@ public:
 //----------------------------------------------------------------
 class Color : public Figure
 {
-protected:
+public:
 	short Cred;
 	short Cgreen;
 	short Cblue;
-
-public:
 
 	void getColor()
 	{
@@ -61,43 +59,72 @@ public:
 		cout << dec;
 	}
 
-	void setColor()
+	void setColor(char foreBack)
 	{
-		int red, int green, int blue;
-		cout << "Red(0-255): ";
-		cin >> red;
-		this->Cred = red;
-		cout << "\nGreen(0-255): ";
-		cin >> green;
-		this->Cgreen = green;
-		cout << "\nBlue(0-255): ";
-		cin >> blue;
-		this->Cblue = blue;
-	}
+		int red, green, blue;
 
-	void setDefaultBackGroundColor()
-	{
-		this->Cred = 0x00;
-		this->Cgreen = 0x00;
-		this->Cblue = 0x00;
-	}
-
-	void setDefaultForeGroundColor()
-	{
-		this->Cred = 0xFF;
-		this->Cgreen = 0xFF;
-		this->Cblue = 0xFF;
+		if (foreBack == 'f')
+		{
+			this->Cred = 255;
+			this->Cgreen = 255;
+			this->Cblue = 255;
+		}
+		else
+		if (foreBack == 'b')
+		{
+			this->Cred = 0;
+			this->Cgreen = 0;
+			this->Cblue = 0;
+		}
+		else
+		{
+			cout << "Red(0-255): ";
+			cin >> red;
+			this->Cred = red;
+			cout << "\nGreen(0-255): ";
+			cin >> green;
+			this->Cgreen = green;
+			cout << "\nBlue(0-255): ";
+			cin >> blue;
+			this->Cblue = blue;
+		}
 	}
 
 	void lighten() 
 	{ 
-		
-		Cred++; 
-		Cgreen++; 
-		Cblue++; 
+		int num = 0;
+
+		cout << "How much upper: ";
+		cin >> num;
+
+		if (this->Cred < 255)
+			Cred += num; 
+
+		if (this->Cgreen < 255)
+			Cgreen += num;
+
+		if (this->Cblue < 255)
+			Cblue += num;
+
 	}
 	
-	void darken() { Cred--; Cgreen--; Cblue--;	}
+	void darken() 
+	{ 
+
+		int num = 0;
+
+		cout << "How much lower: ";
+		cin >> num;
+
+		if (this->Cred > 0)
+			Cred -= num;
+
+		if (this->Cgreen < 255)
+			Cgreen -= num;
+
+		if (this->Cblue < 255)
+			Cblue -= num;
+	}
 };
 
 //----------------------------------------------------------------
@@ -109,20 +136,14 @@ public:
 
 	void setPosition() { Figure::setPosition(); }
 
-	void setColor() { Color::setColor(); }
-
-	void lighten() { Color::lighten(); }
-
 	void draw()
 	{
 		cout << endl << "Type: Square" << endl;
 		cout << "Width: " << Figure::getWidth() << endl;
 		cout << "Height: " << Figure::getWidth() << endl;
 		cout << "Position: " << Figure::position.x << " x " << Figure::position.y << endl;
-		Color::setDefaultBackGroundColor(); 
 		cout << "Background Color: #";
 		Color::getColor();
-		Color::setDefaultForeGroundColor();
 		cout << "\nForeground Color: #";
 		Color::getColor();
 	}
@@ -133,16 +154,27 @@ class Rectangle : public Figure, public Color
 {
 	int height = 0;
 public:
+
+	void setWidth() { Figure::setWidth(); }
+
+	void setHeight() 
+	{
+		int val;
+		cout << "Height: ";
+		cin >> val;
+		this->height = val;
+	}
+
+	void setPosition() { Figure::setPosition(); }
+
 	void draw()
 	{
 		cout << endl << "Type: Rectangle" << endl;
 		cout << "Width: " << Figure::getWidth() << endl;
 		cout << "Height: " << this->height << endl;
 		cout << "Position: " << Figure::position.x << " x " << Figure::position.y << endl;
-		Color::setDefaultBackGroundColor();
 		cout << "Background Color: #";
 		Color::getColor();
-		Color::setDefaultForeGroundColor();
 		cout << "\nForground Color: #";
 		Color::getColor();
 	}
@@ -154,21 +186,27 @@ class Circle : public Figure, public Color
 	int radius = 0;
 public:
 
+	void setRadius()
+	{
+		int val;
+		cout << "Radius: ";
+		cin >> val;
+		this->radius = val;
+	}
+
+	void setPosition() { Figure::setPosition(); }
 
 	void draw()
 	{
 		cout << endl << "Type: Circle" << endl;
 		cout << "Raduis: " << this->radius << endl;
 		cout << "Position: " << Figure::position.x << " x " << Figure::position.y << endl;
-		Color::setDefaultBackGroundColor();
 		cout << "Background Color: #";
 		Color::getColor();
-		Color::setDefaultForeGroundColor();
 		cout << "\nForground Color: #";
 		Color::getColor();
 	}
 };
-
 
 //----------------------------------------------------------------
 void main()
@@ -178,15 +216,16 @@ void main()
 	Circle cir;
 
 	int choiceFig = 0, choiceEdit = 0;
-	bool conti = true;
+	char conti;
 
+	BEGIN:
 	cout << "Select figure:"
 		"\n1: Squeare"
 		"\n2: Rectangle"
 		"\n3: Circle"
 		"\nChoice: ";
 	cin >> choiceFig;
-
+	AGAIN:
 	system("cls");
 
 	cout << "----------------------DRAW----------------------";
@@ -196,13 +235,13 @@ void main()
 			sq.draw();
 			cout << endl;
 
-			cout << "What u want to cange:"
-				"1. Side"
-				"2. Position"
-				"3. Change color"
-				"4. Lighten color"
-				"5. Darken color"
-				"Choice: ";
+			cout << "\nWhat u want to cange:"
+				"\n1. Side"
+				"\n2. Position"
+				"\n3. Change color"
+				"\n4. Lighten color"
+				"\n5. Darken color"
+				"\nChoice: ";
 			cin >> choiceEdit;
 
 			switch (choiceEdit)
@@ -214,12 +253,16 @@ void main()
 				sq.setPosition();
 				break;
 			case 3:
-				sq.setColor();
+				sq.setColor('c');
 				break;
 			case 4:
-
+				sq.lighten();
+				break;
+			case 5:
+				sq.darken();
 			}
-
+			
+			sq.draw();
 			cout << endl;
 				
 			break;
@@ -227,29 +270,86 @@ void main()
 			rec.draw();
 			cout << endl;
 
-			cout << "What u want to cange:"
-				"1. Width"
-				"2. Height"
-				"3. Position"
-				"4. Change color"
-				"5. Lighten color"
-				"6. Darken color"
-				"Choice: ";
+			cout << "\nWhat u want to cange:"
+				"\n1. Width"
+				"\n2. Height"
+				"\n3. Position"
+				"\n4. Change color"
+				"\n5. Lighten color"
+				"\n6. Darken color"
+				"\nChoice: ";
+
+			cin >> choiceEdit;
+
+			switch (choiceEdit)
+			{
+			case 1:
+				rec.setWidth();
+				break;
+			case 2:
+				rec.setHeight();
+				break;
+			case 3:
+				rec.setPosition();
+				break;
+			case 4:
+				rec.setColor('c');
+				break;
+			case 5:
+				rec.lighten();
+				break;
+			case 6:
+				rec.darken();
+			}
+
+			rec.draw();
+			cout << endl;
 
 			break;
 		case 3:
 			cir.draw();
 			cout << endl;
 
-			cout << "What u want to cange:"
-				"1. Radius"
-				"2. Position"
-				"3. Change color"
-				"4. Lighten color"
-				"5. Darken color"
-				"Choice: ";
+			cout << "\nWhat u want to cange:"
+				"\n1. Radius"
+				"\n2. Position"
+				"\n3. Change color"
+				"\n4. Lighten color"
+				"\n5. Darken color"
+				"\nChoice: ";
+			cin >> choiceEdit;
 
+			switch (choiceEdit)
+			{
+			case 1:
+				cir.setRadius();
+				break;
+			case 2:
+				cir.setPosition();
+				break;
+			case 3:
+				cir.setColor('c');
+				break;
+			case 4:
+				cir.lighten();
+				break;
+			case 5:
+				cir.darken();
+			}
+			
 	}
+
+	cout << "\nAnoter figure or this edit?(y/n): ";
+	cin >> conti;
+	if (conti == 'y')
+	{
+		system("cls");
+		goto BEGIN;
+	}
+	else			
+		goto AGAIN;
+			
+	cout << endl;
 
 	cout << endl;
 	system("pause");
