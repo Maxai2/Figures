@@ -50,18 +50,18 @@ public:
 
 	void getColor()
 	{
-		cout << hex;
+		cout << uppercase << hex;
 
 		this->Cred == 0 ? (cout << '0' << this->Cred) : cout << this->Cred;
 		this->Cgreen == 0 ? (cout << '0' << this->Cgreen) : cout << this->Cgreen;
 		this->Cblue == 0 ? (cout << '0' << this->Cblue) : cout << this->Cblue;
 
-		cout << dec;
+		cout << nouppercase << dec;
 	}
 
 	void setColor(char foreBack)
 	{
-		int red, green, blue;
+		int red = 0, green = 0, blue = 0;
 
 		if (foreBack == 'f')
 		{
@@ -136,15 +136,19 @@ public:
 
 	void setPosition() { Figure::setPosition(); }
 
-	void draw()
+	void draw(bool defaultCol)
 	{
 		cout << endl << "Type: Square" << endl;
 		cout << "Width: " << Figure::getWidth() << endl;
 		cout << "Height: " << Figure::getWidth() << endl;
 		cout << "Position: " << Figure::position.x << " x " << Figure::position.y << endl;
 		cout << "Background Color: #";
+		if (defaultCol)
+			Color::setColor('b');
 		Color::getColor();
 		cout << "\nForeground Color: #";
+		if (defaultCol)
+			Color::setColor('f');
 		Color::getColor();
 	}
 };
@@ -167,15 +171,19 @@ public:
 
 	void setPosition() { Figure::setPosition(); }
 
-	void draw()
+	void draw(bool defaultCol)
 	{
 		cout << endl << "Type: Rectangle" << endl;
 		cout << "Width: " << Figure::getWidth() << endl;
 		cout << "Height: " << this->height << endl;
 		cout << "Position: " << Figure::position.x << " x " << Figure::position.y << endl;
 		cout << "Background Color: #";
+		if (defaultCol)
+			Color::setColor('b');
 		Color::getColor();
-		cout << "\nForground Color: #";
+		cout << "\nForeground Color: #";
+		if (defaultCol)
+			Color::setColor('f');
 		Color::getColor();
 	}
 };
@@ -196,14 +204,18 @@ public:
 
 	void setPosition() { Figure::setPosition(); }
 
-	void draw()
+	void draw(bool defaultCol)
 	{
 		cout << endl << "Type: Circle" << endl;
 		cout << "Raduis: " << this->radius << endl;
 		cout << "Position: " << Figure::position.x << " x " << Figure::position.y << endl;
 		cout << "Background Color: #";
+		if (defaultCol)
+			Color::setColor('b');
 		Color::getColor();
-		cout << "\nForground Color: #";
+		cout << "\nForeground Color: #";
+		if (defaultCol)
+			Color::setColor('f');
 		Color::getColor();
 	}
 };
@@ -232,7 +244,7 @@ void main()
 	switch (choiceFig)
 	{
 		case 1:
-			sq.draw();
+			sq.draw(true);
 			cout << endl;
 
 			cout << "\nWhat u want to cange:"
@@ -262,12 +274,12 @@ void main()
 				sq.darken();
 			}
 			
-			sq.draw();
+			sq.draw(false);
 			cout << endl;
 				
 			break;
 		case 2:
-			rec.draw();
+			rec.draw(true);
 			cout << endl;
 
 			cout << "\nWhat u want to cange:"
@@ -302,12 +314,12 @@ void main()
 				rec.darken();
 			}
 
-			rec.draw();
+			rec.draw(false);
 			cout << endl;
 
 			break;
 		case 3:
-			cir.draw();
+			cir.draw(true);
 			cout << endl;
 
 			cout << "\nWhat u want to cange:"
@@ -337,6 +349,8 @@ void main()
 				cir.darken();
 			}
 			
+			rec.draw(false);
+			cout << endl;
 	}
 
 	cout << "\nAnoter figure or this edit?(y/n): ";
